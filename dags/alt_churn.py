@@ -1,10 +1,12 @@
 # dags/alt_churn.py
 import pendulum
+import os, sys
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+sys.path.append('/home/mle-user/mle_projects/mle-airflow/plugins/')
+sys.path.append('/opt/airflow/plugins/')
+sys.path.append('/home/mle-user/airflow/plugins/')
 from steps.churn import create_table, extract, transform, load
-# продолжите код и запустите его в виртуальной машине #
-# после отработки кода нажмите кнопку Проверить, добавлять свое решение необязательно #
 
 with DAG(
     dag_id='prepare_alt_churn_dataset',  # This is the required dag_id argument

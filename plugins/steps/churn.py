@@ -32,7 +32,7 @@ def create_table():
     Column('dependents', String),
     Column('multiple_lines', String),
     Column('target', Integer),
-    UniqueConstraint('customer_id', name='unique_customer_id_constraint')
+    UniqueConstraint('customer_id', name='unique_customer_id_constraint2')
     )
     if not inspect(engine).has_table(churn_table.name): 
         metadata.create_all(engine)        
