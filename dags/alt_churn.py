@@ -7,12 +7,15 @@ sys.path.append('/home/mle-user/mle_projects/mle-airflow/plugins/')
 sys.path.append('/opt/airflow/plugins/')
 sys.path.append('/home/mle-user/airflow/plugins/')
 from steps.churn import create_table, extract, transform, load
+from steps.messages import send_telegram_success_message, send_telegram_failure_message
 
 with DAG(
     dag_id='prepare_alt_churn_dataset',  # This is the required dag_id argument
     schedule='@once',
     start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
     catchup=False,
+    on_success_callback = send_telegram_success_message,
+    on_failure_callback = send_telegram_failure_message,
     tags=["ETL"]
 ) as dag:
     step1 = PythonOperator(task_id='create_table', python_callable=create_table)
@@ -20,3 +23,4 @@ with DAG(
     step3 = PythonOperator(task_id='transform', python_callable=transform)
     step4 = PythonOperator(task_id='load', python_callable=load)
     step1 >> step2 >> step3 >> step4
+
